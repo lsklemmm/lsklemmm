@@ -1,0 +1,47 @@
+#include <iostream>
+#include <math.h>
+using namespace std;
+
+/*
+x≈ -5.5446
+x≈-1.83321
+x≈1.38113*/
+
+const double eps = 0.000000001; //погрешность
+
+double proizv_func(double x) {
+    double y;
+    y = 3 * pow(x, 2) + 12 * x - 0.02 * exp(x);
+    return y;
+}
+
+double func(double x) {
+    double y;
+    y = pow(x, 3) + 6 * pow(x, 2) - 0.02 * exp(x) - 14;
+    return y;
+}
+
+double find_(double x) {
+    do {
+        x = x - (func(x) / proizv_func(x));
+    } while (fabs(func(x)) > eps);
+    return x;
+}
+
+double main_func(double a, double b) //границы
+{
+    double tmp = a, h = 0.1;
+    while (tmp < b) {
+        if (func(tmp) * func(tmp + h) < 0)//ищем простые корни
+            if (trunc(func(find_(tmp)) * 100000.0) / 100000.0 == 0)//если фун-я = 0, то выписываем корень, который нам нужен
+                cout << "X = "<< find_(tmp) << "\t Y= "<< func(find_(tmp)) << endl;
+        tmp += h;//tmp -счетная переменная 
+    }
+    return a, b;
+}
+
+int main()
+{
+    main_func(-6, 2);
+    system("\nPause");
+}
